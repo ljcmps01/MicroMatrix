@@ -2,4 +2,5 @@
 *backups*
 *cache
 *.lck
+*prl
 \#auto_saved_files#
