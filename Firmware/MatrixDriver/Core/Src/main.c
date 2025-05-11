@@ -21,6 +21,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "includes.h"
+#include "matrixstate.h"
 #include "utils.h"
 
 /* USER CODE END Includes */
@@ -46,22 +47,6 @@
 TIM_HandleTypeDef htim3;
 
 /* USER CODE BEGIN PV */
-uint8_t sketch[MAX_FIL][MAX_COL]={
-		{0,1,1,1,0},
-		{1,0,0,0,1},
-		{1,0,0,0,1},
-		{0,1,1,1,0},
-		{0,0,1,0,0}
-};
-
-uint8_t arr_sketch[MAX_FIL]={
-  0b01110,\
-  0b10001,\
-  0b10001,\
-  0b01110,\
-  0b00100,\
-};
-
 
 /* USER CODE END PV */
 
@@ -71,8 +56,6 @@ static void MX_GPIO_Init(void);
 static void MX_TIM3_Init(void);
 /* USER CODE BEGIN PFP */
 // void Delay_us(uint16_t us);
-void copiarMatriz(int *origen, int *destino);
-void desplazarColumnas(int *matriz, int filas, int columnas, int direccion, int circular);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -97,7 +80,7 @@ int main(void)
   HAL_Init();
 
   /* USER CODE BEGIN Init */
-
+  Matrix_t pantalla;
   /* USER CODE END Init */
 
   /* Configure the system clock */
@@ -113,12 +96,13 @@ int main(void)
   /* USER CODE BEGIN 2 */
   HAL_TIM_Base_Start(&TIMER);
 
-  for (size_t fil = 0; fil < MAX_FIL; fil++)
+  Matrix_Init(&pantalla,5,5,FIL1_GPIO_Port,COL1_GPIO_Port,FIL1_Pin,COL1_Pin);
+  for (int i = 0; i < 5; i++)
   {
-    arr_sketch[fil]=(arr_sketch[fil]<<0);
-    arr_sketch[fil]&=((1<<(MAX_FIL+1))-1);
+    arr_sketch[i]=(1<<i);
   }
   
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -128,17 +112,9 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-
-
-    for (int fil = 0; fil < MAX_FIL; fil++)
-    {
-      COL1_GPIO_Port->ODR&=~(arr_sketch[fil]<<__builtin_ctz(COL1_Pin)); 
-      HAL_GPIO_WritePin(FIL1_GPIO_Port,(FIL1_Pin<<fil),GPIO_PIN_SET);
-      // Delay_us(5000);
-      HAL_Delay(2);
-      COL1_GPIO_Port->ODR|=(arr_sketch[fil]<<__builtin_ctz(COL1_Pin));
-      HAL_GPIO_WritePin(FIL1_GPIO_Port,(FIL1_Pin<<fil),GPIO_PIN_RESET);
-    }    
+    // Maquina_Estado();
+    multiplexado(&pantalla);
+    // Delay_us(500);
   }
   /* USER CODE END 3 */
 }
@@ -269,41 +245,6 @@ static void MX_GPIO_Init(void)
 //     while (__HAL_TIM_GET_COUNTER(&TIMER) < us);
 // }
 
-void desplazarColumnas(int *matriz, int filas, int columnas, int direccion, int circular) {
-    if (direccion != 1 && direccion != -1) return;  // solo aceptamos -1 o 1
-
-    if (direccion == 1) { // Desplazamiento a la derecha
-        for (int i = 0; i < filas; i++) {
-            int ultimo = *(matriz + i * columnas + (columnas - 1));
-            for (int j = columnas - 1; j > 0; j--) {
-                *(matriz + i * columnas + j) = *(matriz + i * columnas + (j - 1));
-            }
-            if (circular)
-                *(matriz + i * columnas + 0) = ultimo;
-            else
-                *(matriz + i * columnas + 0) = 0;
-        }
-    } else if (direccion == -1) { // Desplazamiento a la izquierda
-        for (int i = 0; i < filas; i++) {
-            int primero = *(matriz + i * columnas + 0);
-            for (int j = 0; j < columnas - 1; j++) {
-                *(matriz + i * columnas + j) = *(matriz + i * columnas + (j + 1));
-            }
-            if (circular)
-                *(matriz + i * columnas + (columnas - 1)) = primero;
-            else
-                *(matriz + i * columnas + (columnas - 1)) = 0;
-        }
-    }
-}
-
-void copiarMatriz(int *origen, int *destino) {
-    for (int i = 0; i < MAX_FIL; i++) {
-        for (int j = 0; j < MAX_COL; j++) {
-            *(destino + i * MAX_COL + j) = *(origen + i * MAX_COL + j);
-        }
-    }
-}
 /* USER CODE END 4 */
 
 /**

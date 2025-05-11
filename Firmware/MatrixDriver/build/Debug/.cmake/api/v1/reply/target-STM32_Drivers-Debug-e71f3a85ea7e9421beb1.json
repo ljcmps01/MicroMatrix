@@ -94,7 +94,7 @@
 			"compileCommandFragments" : 
 			[
 				{
-					"fragment" : " -mcpu=cortex-m0  -Wall -Wextra -Wpedantic -fdata-sections -ffunction-sections -mcpu=cortex-m0  -Wall -Wextra -Wpedantic -fdata-sections -ffunction-sections -mcpu=cortex-m0  -Wall -Wextra -Wpedantic -fdata-sections -ffunction-sections -O0 -g3 -std=gnu11"
+					"fragment" : " -mcpu=cortex-m0  -Wall -Wextra -Wpedantic -fdata-sections -ffunction-sections -mcpu=cortex-m0  -Wall -Wextra -Wpedantic -fdata-sections -ffunction-sections -O0 -g3 -std=gnu11"
 				}
 			],
 			"defines" : 
@@ -116,23 +116,23 @@
 			[
 				{
 					"backtrace" : 2,
-					"path" : "D:/STM/MatrixDriver/Core/Inc"
+					"path" : "C:/Users/ljcmp/OneDrive/Documentos/GitHub/MicroMatrix/Firmware/MatrixDriver/Core/Inc"
 				},
 				{
 					"backtrace" : 2,
-					"path" : "D:/STM/MatrixDriver/Drivers/STM32F0xx_HAL_Driver/Inc"
+					"path" : "C:/Users/ljcmp/OneDrive/Documentos/GitHub/MicroMatrix/Firmware/MatrixDriver/Drivers/STM32F0xx_HAL_Driver/Inc"
 				},
 				{
 					"backtrace" : 2,
-					"path" : "D:/STM/MatrixDriver/Drivers/STM32F0xx_HAL_Driver/Inc/Legacy"
+					"path" : "C:/Users/ljcmp/OneDrive/Documentos/GitHub/MicroMatrix/Firmware/MatrixDriver/Drivers/STM32F0xx_HAL_Driver/Inc/Legacy"
 				},
 				{
 					"backtrace" : 2,
-					"path" : "D:/STM/MatrixDriver/Drivers/CMSIS/Device/ST/STM32F0xx/Include"
+					"path" : "C:/Users/ljcmp/OneDrive/Documentos/GitHub/MicroMatrix/Firmware/MatrixDriver/Drivers/CMSIS/Device/ST/STM32F0xx/Include"
 				},
 				{
 					"backtrace" : 2,
-					"path" : "D:/STM/MatrixDriver/Drivers/CMSIS/Include"
+					"path" : "C:/Users/ljcmp/OneDrive/Documentos/GitHub/MicroMatrix/Firmware/MatrixDriver/Drivers/CMSIS/Include"
 				}
 			],
 			"language" : "C",

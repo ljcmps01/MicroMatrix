@@ -7,10 +7,10 @@
             "intelliSenseMode": "${default}",
             "includePath": [
                 "${default}",
-                "${workspaceFolder}/Core/Inc",
-                "${workspaceFolder}/Drivers/STM32F0xx_HAL_Driver/Inc",
-                "${workspaceFolder}/Drivers/CMSIS/Device/ST/STM32F0xx/Include"
-            ]
+                "${workspaceFolder}/Core/**",
+                "${workspaceFolder}/Drivers/**"
+            ],
+            "cStandard": "c23"
         }
     ]
 }

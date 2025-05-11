@@ -1,4 +1,4 @@
-# Install script for directory: D:/STM/MatrixDriver/cmake/stm32cubemx
+# Install script for directory: C:/Users/ljcmp/OneDrive/Documentos/GitHub/MicroMatrix/Firmware/MatrixDriver/cmake/stm32cubemx
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
