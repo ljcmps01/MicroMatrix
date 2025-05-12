@@ -71,7 +71,6 @@ int main(void)
 {
 
   /* USER CODE BEGIN 1 */
-
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -94,14 +93,16 @@ int main(void)
   MX_GPIO_Init();
   MX_TIM3_Init();
   /* USER CODE BEGIN 2 */
+
   HAL_TIM_Base_Start(&TIMER);
 
+  uint32_t millis = HAL_GetTick();
+  int countdown = 100;
   Matrix_Init(&pantalla,5,5,FIL1_GPIO_Port,COL1_GPIO_Port,FIL1_Pin,COL1_Pin);
-  for (int i = 0; i < 5; i++)
-  {
-    arr_sketch[i]=(1<<i);
-  }
-  
+  // for (int i = 0; i < 5; i++)
+  // {
+  //   arr_sketch[i]=(1<<i);
+  // }
 
   /* USER CODE END 2 */
 
@@ -114,6 +115,19 @@ int main(void)
     /* USER CODE BEGIN 3 */
     // Maquina_Estado();
     multiplexado(&pantalla);
+    if(HAL_GetTick()-millis > 50){
+      if (countdown)
+      {
+        countdown--;
+      }
+      else
+      {
+        millis = HAL_GetTick();
+        shift_matrix(0);
+      }
+      
+      
+    } 
     // Delay_us(500);
   }
   /* USER CODE END 3 */
