@@ -5,7 +5,7 @@
 
 #define MAX_FILAS 8
 
-#define MAX_FIL 5 //Legacy, remover cuando se migre la funcion de multiplexado
+#define MAX_FIL 8 //Legacy, remover cuando se migre la funcion de multiplexado
 
 extern int mEstado;
 extern uint8_t arr_sketch[MAX_FIL]; //Se mantiene extern para simplificar el
