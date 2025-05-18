@@ -7,25 +7,6 @@ typedef enum{
 
 int mEstado = ESTADO_MOSTRAR;
 
-// uint8_t arr_sketch[MAX_FIL]={
-//   0b01110,
-//   0b10001,
-//   0b10101,
-//   0b01110,
-//   0b10101,
-// };
-
-uint8_t arr_sketch[MAX_FIL]={
-    0b00011000,
-    0b00011000,
-    0b00111100,
-    0b00111100,
-    0b00111100,
-    0b00011000,
-    0b00100100,
-    0b01000010
-};
-
 void Matrix_Init(
     Matrix_t *new_matrix,
     uint8_t rows,\
@@ -63,7 +44,7 @@ void Matrix_Init(
 void Matrix_Clear(Matrix_t *matrix){
     for (int i = 0; i < MAX_FILAS; i++)
     {
-        matrix->output[i]=0;
+        matrix->output[i]=1;
     }
 }
 
@@ -96,11 +77,11 @@ void shift_matrix(Matrix_t *matrix,uint8_t y)
 {
     int old_value=matrix->output[0];
     int new_value=matrix->output[0];
-    for (size_t fil = 0; fil < MAX_FIL; fil++)
+    for (int fil = 0; fil < matrix->rows; fil++)
     {
         if(y){
             if(fil==0){
-                matrix->output[fil]=matrix->output[MAX_FIL-1];
+                matrix->output[fil]=matrix->output[(matrix->rows)-1];
             }
             else
             {
@@ -113,7 +94,7 @@ void shift_matrix(Matrix_t *matrix,uint8_t y)
         else
         {
             matrix->output[fil]=(matrix->output[fil]<<1);
-            if((1<<MAX_FIL)&matrix->output[fil])
+            if((1<<matrix->rows)&matrix->output[fil])
                 matrix->output[fil]++;
         }
     }

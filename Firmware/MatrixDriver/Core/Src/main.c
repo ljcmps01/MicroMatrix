@@ -50,7 +50,118 @@ TIM_HandleTypeDef htim3;
 UART_HandleTypeDef huart1;
 
 /* USER CODE BEGIN PV */
-
+uint8_t digits[10][8] = {
+    // 0
+    {
+        0b00111100,
+        0b01100110,
+        0b01101110,
+        0b01110110,
+        0b01100110,
+        0b01100110,
+        0b00111100,
+        0b00000000
+    },
+    // 1
+    {
+        0b00011000,
+        0b00111000,
+        0b00011000,
+        0b00011000,
+        0b00011000,
+        0b00011000,
+        0b01111110,
+        0b00000000
+    },
+    // 2
+    {
+        0b00111100,
+        0b01100110,
+        0b00000110,
+        0b00001100,
+        0b00110000,
+        0b01100000,
+        0b01111110,
+        0b00000000
+    },
+    // 3
+    {
+        0b00111100,
+        0b01100110,
+        0b00000110,
+        0b00011100,
+        0b00000110,
+        0b01100110,
+        0b00111100,
+        0b00000000
+    },
+    // 4
+    {
+        0b00001100,
+        0b00011100,
+        0b00111100,
+        0b01101100,
+        0b01111110,
+        0b00001100,
+        0b00011110,
+        0b00000000
+    },
+    // 5
+    {
+        0b01111110,
+        0b01100000,
+        0b01111100,
+        0b00000110,
+        0b00000110,
+        0b01100110,
+        0b00111100,
+        0b00000000
+    },
+    // 6
+    {
+        0b00111100,
+        0b01100110,
+        0b01100000,
+        0b01111100,
+        0b01100110,
+        0b01100110,
+        0b00111100,
+        0b00000000
+    },
+    // 7
+    {
+        0b01111110,
+        0b01100110,
+        0b00000110,
+        0b00001100,
+        0b00011000,
+        0b00011000,
+        0b00011000,
+        0b00000000
+    },
+    // 8
+    {
+        0b00111100,
+        0b01100110,
+        0b01100110,
+        0b00111100,
+        0b01100110,
+        0b01100110,
+        0b00111100,
+        0b00000000
+    },
+    // 9
+    {
+        0b00111100,
+        0b01100110,
+        0b01100110,
+        0b00111110,
+        0b00000110,
+        0b01100110,
+        0b00111100,
+        0b00000000
+    }
+};
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -102,9 +213,8 @@ int main(void)
   HAL_TIM_Base_Start(&TIMER);
 
   uint32_t millis = HAL_GetTick();
-  int countdown = 100;
   Matrix_Init(&pantalla,8,8,FILAS_GPIO_Port,COLUMNAS_GPIO_Port,FILAS_Pin,COLUMNAS_Pin);
-  load_output(&pantalla,arr_sketch);
+  uint8_t contador=0;
 
   /* USER CODE END 2 */
 
@@ -117,15 +227,16 @@ int main(void)
     /* USER CODE BEGIN 3 */
     // Maquina_Estado();
     multiplexado(&pantalla);
-    if(HAL_GetTick()-millis > 75){
-      if (countdown)
+    if(HAL_GetTick()-millis > 750){
+      millis = HAL_GetTick();
+      if (contador<9)
       {
-        countdown--;
+        load_output(&pantalla,digits[contador]);
+        contador++;
       }
       else
       {
-        millis = HAL_GetTick();
-        shift_matrix(&pantalla,1);
+        contador=0;
       }
       
       

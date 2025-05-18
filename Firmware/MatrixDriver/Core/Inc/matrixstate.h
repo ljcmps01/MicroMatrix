@@ -5,12 +5,7 @@
 
 #define MAX_FILAS 8
 
-#define MAX_FIL 8 //Legacy, remover cuando se migre la funcion de multiplexado
-
 extern int mEstado;
-extern uint8_t arr_sketch[MAX_FIL]; //Se mantiene extern para simplificar el
-                                    // desarrollo no deberia manternse accesible
-
 typedef struct
 {
     int rows;       //Cantidad de filas (x)
@@ -36,6 +31,10 @@ typedef struct
 
 }Matrix_t;
 
+/**
+ * @brief Constructor de la estructura de la matriz led
+ * 
+ */
 void Matrix_Init(
     Matrix_t *new_matrix,
     uint8_t rows,\
@@ -45,12 +44,50 @@ void Matrix_Init(
     uint16_t first_row_pin,\
     uint16_t first_col_pin
     );
-void Matrix_Clear(Matrix_t *matrix);
-void Maquina_Estado(void);
-void multiplexado(Matrix_t *matrix);
-void shift_matrix(Matrix_t *matrix,uint8_t y);
-void crop_input ();
 
+/**
+ * @brief Limpia el vector de salida de la matriz
+ * 
+ * @param matrix 
+ */
+void Matrix_Clear(Matrix_t *matrix);
+
+/**
+ * @brief Funcion de maquina de estado
+ * 
+ */
+void Maquina_Estado(void);
+
+/**
+ * @brief Funcion de multiplexado general, debe
+ * recorrerse frecuentemente en el codigo
+ * 
+ * @param matrix matriz de la que se leera la salida
+ */
+void multiplexado(Matrix_t *matrix);
+
+/**
+ * @brief Funcion de desplazamiento de la matriz
+ * 
+ * @param matrix  matriz donde se guarda el vector a desplazar
+ * @param y indica si es desplazamiento vertical u horizontal
+ */
+void shift_matrix(Matrix_t *matrix,uint8_t y);
+
+/**
+ * @brief Recorta el vector de salida para asegurarse que coincida
+ * con el tamaño definido en la estructura
+ * 
+ * @param matrix matriz que se truncara
+ */
+void crop_input (Matrix_t *matrix);
+
+/**
+ * @brief Carga un vector al vector de salida
+ * 
+ * @param matrix matriz a modificar
+ * @param data vector a cargar
+ */
 void load_output(Matrix_t *matrix, uint8_t data[]);
 
 #endif
