@@ -15,15 +15,15 @@ int mEstado = ESTADO_MOSTRAR;
 //   0b10101,
 // };
 
-uint8_t arr_sketch[MAX_FIL]={
-  0b01110100,\
-  0b00011100,\
-  0b00110100,\
-  0b11100100,\
-  0b00101000,\
-  0b01001000,\
-  0b10010001,\
-  0b00001101,\
+volatile uint8_t arr_sketch[MAX_FIL]={
+    0b00011000,
+    0b00011000,
+    0b00111100,
+    0b00111100,
+    0b00111100,
+    0b00011000,
+    0b00100100,
+    0b01000010
 };
 
 void Matrix_Init(
@@ -82,39 +82,39 @@ void Maquina_Estado(void){
 
 void multiplexado(Matrix_t *matrix){
     crop_input(matrix);
-    for (int fil = 0; fil < MAX_FIL; fil++)
+    for (int fil = 0; fil < matrix->rows; fil++)
     {
-        matrix->columns_port->ODR&=~(arr_sketch[fil]<<__builtin_ctz(matrix->col_pin));
+        matrix->columns_port->ODR&=~(matrix->output[fil]<<__builtin_ctz(matrix->col_pin));
         HAL_GPIO_WritePin(matrix->rows_port,(matrix->row_pin<<fil),GPIO_PIN_SET);
         Delay_us(5000);
-        matrix->columns_port->ODR|=(arr_sketch[fil]<<__builtin_ctz(matrix->col_pin));
+        matrix->columns_port->ODR|=(matrix->output[fil]<<__builtin_ctz(matrix->col_pin));
         HAL_GPIO_WritePin(matrix->rows_port,(matrix->row_pin<<fil),GPIO_PIN_RESET);
     }   
 }
 
-void shift_matrix(uint8_t y)
+void shift_matrix(Matrix_t *matrix,uint8_t y)
 {
-    int old_value=arr_sketch[0];
-    int new_value=arr_sketch[0];
+    int old_value=matrix->output[0];
+    int new_value=matrix->output[0];
     for (size_t fil = 0; fil < MAX_FIL; fil++)
     {
         if(y){
             if(fil==0){
-                arr_sketch[fil]=arr_sketch[MAX_FIL-1];
+                matrix->output[fil]=matrix->output[MAX_FIL-1];
             }
             else
             {
-                old_value=arr_sketch[fil];
-                arr_sketch[fil]=new_value;
+                old_value=matrix->output[fil];
+                matrix->output[fil]=new_value;
                 new_value=old_value;
             }
             
         }
         else
         {
-            arr_sketch[fil]=(arr_sketch[fil]<<1);
-            if((1<<MAX_FIL)&arr_sketch[fil])
-                arr_sketch[fil]++;
+            matrix->output[fil]=(matrix->output[fil]<<1);
+            if((1<<MAX_FIL)&matrix->output[fil])
+                matrix->output[fil]++;
         }
     }
 }
@@ -123,7 +123,15 @@ void crop_input (Matrix_t *matrix){
 
     for (int row = 0; row < matrix->rows; row++)
     {
-        arr_sketch[row]&= matrix->x_mask;
+        matrix->output[row]&= matrix->x_mask;
+    }
+    
+}
+
+void load_output(Matrix_t *matrix, uint8_t data[]){
+    for (int i = 0; i < matrix->rows; i++)
+    {
+        matrix->output[i]=data[i];
     }
     
 }

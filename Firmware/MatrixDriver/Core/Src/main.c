@@ -34,7 +34,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-#define MAX_FIL 5
+// #define MAX_FIL 8
 #define MAX_COL 5
 #define TIMER htim3
 /* USER CODE END PD */
@@ -103,11 +103,8 @@ int main(void)
 
   uint32_t millis = HAL_GetTick();
   int countdown = 100;
-  Matrix_Init(&pantalla,5,5,FILAS_GPIO_Port,COLUMNAS_GPIO_Port,FILAS_Pin,COLUMNAS_Pin);
-  // for (int i = 0; i < 5; i++)
-  // {
-  //   arr_sketch[i]=(1<<i);
-  // }
+  Matrix_Init(&pantalla,8,8,FILAS_GPIO_Port,COLUMNAS_GPIO_Port,FILAS_Pin,COLUMNAS_Pin);
+  load_output(&pantalla,arr_sketch);
 
   /* USER CODE END 2 */
 
@@ -120,7 +117,7 @@ int main(void)
     /* USER CODE BEGIN 3 */
     // Maquina_Estado();
     multiplexado(&pantalla);
-    if(HAL_GetTick()-millis > 50){
+    if(HAL_GetTick()-millis > 75){
       if (countdown)
       {
         countdown--;
@@ -128,7 +125,7 @@ int main(void)
       else
       {
         millis = HAL_GetTick();
-        shift_matrix(0);
+        shift_matrix(&pantalla,1);
       }
       
       

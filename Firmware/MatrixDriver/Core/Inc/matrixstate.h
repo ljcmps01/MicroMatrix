@@ -8,7 +8,7 @@
 #define MAX_FIL 8 //Legacy, remover cuando se migre la funcion de multiplexado
 
 extern int mEstado;
-extern uint8_t arr_sketch[MAX_FIL]; //Se mantiene extern para simplificar el
+extern volatile uint8_t arr_sketch[MAX_FIL]; //Se mantiene extern para simplificar el
                                     // desarrollo no deberia manternse accesible
 
 typedef struct
@@ -48,7 +48,9 @@ void Matrix_Init(
 void Matrix_Clear(Matrix_t *matrix);
 void Maquina_Estado(void);
 void multiplexado(Matrix_t *matrix);
-void shift_matrix(uint8_t y);
+void shift_matrix(Matrix_t *matrix,uint8_t y);
 void crop_input ();
+
+void load_output(Matrix_t *matrix, uint8_t data[]);
 
 #endif
