@@ -8,7 +8,7 @@
 #define MAX_FIL 8 //Legacy, remover cuando se migre la funcion de multiplexado
 
 extern int mEstado;
-extern volatile uint8_t arr_sketch[MAX_FIL]; //Se mantiene extern para simplificar el
+extern uint8_t arr_sketch[MAX_FIL]; //Se mantiene extern para simplificar el
                                     // desarrollo no deberia manternse accesible
 
 typedef struct

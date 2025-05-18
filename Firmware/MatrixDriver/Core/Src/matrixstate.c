@@ -15,7 +15,7 @@ int mEstado = ESTADO_MOSTRAR;
 //   0b10101,
 // };
 
-volatile uint8_t arr_sketch[MAX_FIL]={
+uint8_t arr_sketch[MAX_FIL]={
     0b00011000,
     0b00011000,
     0b00111100,
