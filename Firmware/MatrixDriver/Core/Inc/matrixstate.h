@@ -90,4 +90,17 @@ void crop_input (Matrix_t *matrix);
  */
 void load_output(Matrix_t *matrix, uint8_t data[]);
 
+/**
+ * @brief aplica espejado horizontal en la matriz de salida
+ * 
+ * @param matrix 
+ */
+void flip_x(Matrix_t *matrix);
+
+/**
+ * @brief efecto de negativo en la matriz de salida
+ * 
+ * @param matrix 
+ */
+void negate_output(Matrix_t *matrix);
 #endif

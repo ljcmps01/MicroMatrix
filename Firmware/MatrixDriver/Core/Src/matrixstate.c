@@ -116,3 +116,24 @@ void load_output(Matrix_t *matrix, uint8_t data[]){
     }
     
 }
+
+void flip_x(Matrix_t *matrix){
+    for (int fila = 0; fila < matrix->rows; fila++)
+    {
+        uint8_t valor_flip = 0;
+        uint8_t valor_fila=matrix->output[fila];
+        for (int col = 0; col < matrix->columns; col++) {
+            valor_flip <<= 1;           // Desplaza el resultado a la izquierda
+            valor_flip |= (valor_fila & 1);      // Copia el bit menos significativo de n
+            valor_fila >>= 1;                // Desplaza n a la derecha
+        }
+        matrix->output[fila]=valor_flip;
+    }
+}
+
+void negate_output(Matrix_t *matrix){
+    for (int i = 0; i < matrix->rows; i++)
+    {
+        matrix->output[i]=~(matrix->output[i]);
+    }
+}
