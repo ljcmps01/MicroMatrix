@@ -1,0 +1,10 @@
+{
+    "cortex-debug.variableUseNaturalFormat": true,
+    "idf.pythonInstallPath": "C:\\Espressif\\tools\\idf-python\\3.11.2\\python.exe",
+    "files.associations": {
+        "utils.h": "c",
+        "matrixstate.h": "c",
+        "includes.h": "c",
+        "compare": "c"
+    }
+}
