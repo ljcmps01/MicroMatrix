@@ -44,8 +44,9 @@ void Matrix_Init(
 void Matrix_Clear(Matrix_t *matrix){
     for (int i = 0; i < MAX_FILAS; i++)
     {
-        matrix->output[i]=1;
+        matrix->output[i]=-1;
     }
+    multiplexado(matrix);
 }
 
 void Maquina_Estado(void){
