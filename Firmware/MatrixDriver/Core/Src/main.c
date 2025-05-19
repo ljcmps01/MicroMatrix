@@ -82,7 +82,7 @@ uint8_t digits[10][8] = {
       0b00001100,
       0b00110000,
       0b01100000,
-      0b01111110,
+      0b01111111,
     },
     // 3
     {
@@ -216,6 +216,9 @@ int main(void)
   Matrix_Init(&pantalla,8,8,FILAS_GPIO_Port,COLUMNAS_GPIO_Port,FILAS_Pin,COLUMNAS_Pin);
   uint8_t contador=0;
 
+  uint8_t boton2 = 0;
+  uint8_t boton3 = 0;
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -227,21 +230,37 @@ int main(void)
     /* USER CODE BEGIN 3 */
     // Maquina_Estado();
     multiplexado(&pantalla);
-    if(HAL_GetTick()-millis > 500){
+    if(HAL_GetTick()-millis > 200){
       millis = HAL_GetTick();
-      if (contador<10)
+      // negate_output(&pantalla);
+      boton2 = HAL_GPIO_ReadPin(SW2_GPIO_Port,SW2_Pin);
+      boton3 = HAL_GPIO_ReadPin(SW3_GPIO_Port,SW3_Pin);
+
+      if (!boton3)
       {
-        contador++;
+        if (contador>0)
+        {
+          contador--;
+        }
+        else
+        {
+          contador=10;
+        }
       }
-      else
+      if (!boton2)
       {
-        contador=0;
+        if (contador<10)
+        {
+          contador++;
+        }
+        else
+        {
+          contador=0;
+        }
       }
       load_output(&pantalla,digits[contador]);
-      negate_output(&pantalla);
       flip_x(&pantalla);
     } 
-    // Delay_us(500);
   }
   /* USER CODE END 3 */
 }
