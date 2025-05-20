@@ -97,6 +97,7 @@ void load_output(Matrix_t *matrix, uint8_t data[]);
  */
 void flip_x(Matrix_t *matrix);
 
+void flip_y(Matrix_t *matrix);
 /**
  * @brief efecto de negativo en la matriz de salida
  * 

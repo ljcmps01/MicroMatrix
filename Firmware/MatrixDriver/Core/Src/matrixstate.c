@@ -132,6 +132,19 @@ void flip_x(Matrix_t *matrix){
     }
 }
 
+void flip_y(Matrix_t *matrix){
+    uint8_t aux[matrix->rows];
+    for (int fila = 0; fila < matrix->rows; fila++)
+    {
+        aux[fila]=matrix->output[fila];
+    }
+    for (int fila = 0; fila < matrix->rows; fila++)
+    {
+        matrix->output[fila]=aux[matrix->rows-fila-1];
+    }
+    
+}
+
 void negate_output(Matrix_t *matrix){
     for (int i = 0; i < matrix->rows; i++)
     {
