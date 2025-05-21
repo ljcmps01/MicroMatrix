@@ -1,0 +1,8 @@
+#ifndef __FONTS_H
+#define __FONTS_H
+
+#include "includes.h"
+#include <stdint.h>
+
+extern uint8_t digits[10][8];
+#endif

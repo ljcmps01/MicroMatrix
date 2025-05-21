@@ -6,5 +6,6 @@
 #include "main.h"
 #include "matrixstate.h"
 #include "utils.h"
+#include "fonts.h"
 
 #endif

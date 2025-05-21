@@ -51,6 +51,7 @@ target_sources(${CMAKE_PROJECT_NAME} PRIVATE
     Core/Src/main.c
     Core/Src/matrixstate.c
     Core/Src/utils.c
+    Core/Src/fonts.c
 )
 
 # Add include paths
