@@ -1,12 +1,5 @@
 #include "matrixstate.h"
 
-typedef enum{
-    ESTADO_MOSTRAR = 1,
-    ESTADO_DESPLAZAR,
-} Estado_matriz;
-
-int mEstado = ESTADO_MOSTRAR;
-
 void Matrix_Init(
     Matrix_t *new_matrix,
     uint8_t rows,\
@@ -42,34 +35,26 @@ void Matrix_Init(
 }
 
 void Matrix_Clear(Matrix_t *matrix){
-    for (int i = 0; i < MAX_FILAS; i++)
+    uint8_t clear_matrix[matrix->rows];
+    for (int i = 0; i < matrix->rows; i++)
     {
-        matrix->output[i]=-1;
+        clear_matrix[i]=0;
     }
-    multiplexado(matrix);
-}
-
-void Maquina_Estado(void){
-    Delay_us(600);
-    // switch (mEstado)
-    // {
-    // case ESTADO_MOSTRAR:
-    //     /* funcion multiplexado */
-    //     break;
-    
-    // default:
-    //     break;
-    // }
+    // multiplexado(matrix);
+    load_output(matrix,clear_matrix);
 }
 
 void multiplexado(Matrix_t *matrix){
     crop_input(matrix);
+    uint8_t col_offset=__builtin_ctz(matrix->col_pin);
+
     for (int fil = 0; fil < matrix->rows; fil++)
     {
-        matrix->columns_port->ODR&=~(matrix->output[fil]<<__builtin_ctz(matrix->col_pin));
+        matrix->columns_port->ODR|=(matrix->x_mask<<col_offset);
+
+        matrix->columns_port->ODR&=~(matrix->output[fil]<<col_offset);
         HAL_GPIO_WritePin(matrix->rows_port,(matrix->row_pin<<fil),GPIO_PIN_SET);
         Delay_us(5000);
-        matrix->columns_port->ODR|=(matrix->output[fil]<<__builtin_ctz(matrix->col_pin));
         HAL_GPIO_WritePin(matrix->rows_port,(matrix->row_pin<<fil),GPIO_PIN_RESET);
     }   
 }

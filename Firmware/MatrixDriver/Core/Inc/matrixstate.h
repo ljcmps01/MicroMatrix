@@ -5,7 +5,6 @@
 
 #define MAX_FILAS 8
 
-extern int mEstado;
 typedef struct
 {
     int rows;       //Cantidad de filas (x)
@@ -53,12 +52,6 @@ void Matrix_Init(
 void Matrix_Clear(Matrix_t *matrix);
 
 /**
- * @brief Funcion de maquina de estado
- * 
- */
-void Maquina_Estado(void);
-
-/**
  * @brief Funcion de multiplexado general, debe
  * recorrerse frecuentemente en el codigo
  * 
@@ -97,11 +90,18 @@ void load_output(Matrix_t *matrix, uint8_t data[]);
  */
 void flip_x(Matrix_t *matrix);
 
+/**
+ * @brief aplica espejado vertical en la matriz de salida
+ * 
+ * @param matrix 
+ */
 void flip_y(Matrix_t *matrix);
+
 /**
  * @brief efecto de negativo en la matriz de salida
  * 
  * @param matrix 
  */
 void negate_output(Matrix_t *matrix);
+
 #endif
