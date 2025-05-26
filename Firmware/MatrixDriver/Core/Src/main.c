@@ -101,7 +101,7 @@ int main(void)
   HAL_TIM_Base_Start(&TIMER);
 
   uint32_t millis = HAL_GetTick();
-  Matrix_Init(&pantalla,8,8,FILAS_GPIO_Port,COLUMNAS_GPIO_Port,FILAS_Pin,COLUMNAS_Pin);
+  Matrix_Init(&pantalla,8,8,FILAS_GPIO_Port,COLUMNAS_GPIO_Port,FILAS_Pin,COLUMNAS_Pin,0);
   uint8_t contador=0;
 
   uint8_t boton2 = 0;
@@ -134,9 +134,11 @@ int main(void)
         {
           contador=10;
         }
+        matrix_rotate(&pantalla);
       }
       if (!boton3)
       {
+        matrix_rotate(&pantalla);
         if (contador<10)
         {
           contador++;
@@ -147,7 +149,7 @@ int main(void)
         }
       }
       load_output(&pantalla,digits[contador]);
-      // flip_x(&pantalla);
+      flip_x(&pantalla);
       flip_y(&pantalla);
 
     } 

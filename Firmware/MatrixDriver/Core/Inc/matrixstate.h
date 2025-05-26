@@ -28,6 +28,7 @@ typedef struct
     int x_mask;
     int y_mask;
 
+    uint8_t rotate;
 }Matrix_t;
 
 /**
@@ -41,7 +42,8 @@ void Matrix_Init(
     GPIO_TypeDef *row_port,\
     GPIO_TypeDef *col_port,\
     uint16_t first_row_pin,\
-    uint16_t first_col_pin
+    uint16_t first_col_pin,\
+    uint8_t rotate
     );
 
 /**
@@ -66,6 +68,13 @@ void multiplexado(Matrix_t *matrix);
  * @param y indica si es desplazamiento vertical u horizontal
  */
 void shift_matrix(Matrix_t *matrix,uint8_t y);
+
+/**
+ * @brief Rota la matriz 90 grados
+ * 
+ * @param matrix 
+ */
+void matrix_rotate(Matrix_t *matrix);
 
 /**
  * @brief Recorta el vector de salida para asegurarse que coincida

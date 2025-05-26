@@ -7,7 +7,8 @@ void Matrix_Init(
     GPIO_TypeDef *row_port,\
     GPIO_TypeDef *col_port,\
     uint16_t first_row_pin,\
-    uint16_t first_col_pin)
+    uint16_t first_col_pin,\
+    uint8_t rotate)
 {
     new_matrix->initialized=0;
 
@@ -25,6 +26,11 @@ void Matrix_Init(
         //Guardamos los valores de limitacion de la matriz
         new_matrix->y_mask=(1<<rows)-1;
         new_matrix->x_mask=(1<<columns)-1; 
+
+        if(rotate)
+            new_matrix->rotate=1;
+        else
+            new_matrix->rotate=0;
  
         Matrix_Clear(new_matrix);
 
@@ -45,18 +51,33 @@ void Matrix_Clear(Matrix_t *matrix){
 }
 
 void multiplexado(Matrix_t *matrix){
+    uint16_t del=7500;
     crop_input(matrix);
-    uint8_t col_offset=__builtin_ctz(matrix->col_pin);
+    if (matrix->rotate){
+        uint8_t col_offset=__builtin_ctz(matrix->col_pin);
+        for (int fil = 0; fil < matrix->rows; fil++)
+        {
+            matrix->columns_port->ODR|=(matrix->x_mask<<col_offset);
 
-    for (int fil = 0; fil < matrix->rows; fil++)
-    {
-        matrix->columns_port->ODR|=(matrix->x_mask<<col_offset);
-
-        matrix->columns_port->ODR&=~(matrix->output[fil]<<col_offset);
-        HAL_GPIO_WritePin(matrix->rows_port,(matrix->row_pin<<fil),GPIO_PIN_SET);
-        Delay_us(5000);
-        HAL_GPIO_WritePin(matrix->rows_port,(matrix->row_pin<<fil),GPIO_PIN_RESET);
-    }   
+            matrix->columns_port->ODR&=~(matrix->output[fil]<<col_offset);
+            HAL_GPIO_WritePin(matrix->rows_port,(matrix->row_pin<<fil),GPIO_PIN_SET);
+            Delay_us(del);
+            HAL_GPIO_WritePin(matrix->rows_port,(matrix->row_pin<<fil),GPIO_PIN_RESET);
+        }   
+    }
+    else{
+        uint8_t row_offset=__builtin_ctz(matrix->row_pin);
+        for (int fil = 0; fil < matrix->rows; fil++)
+        {
+            HAL_GPIO_WritePin(matrix->columns_port,(matrix->col_pin<<(fil-1)),GPIO_PIN_SET);
+            matrix->rows_port->ODR&=~(matrix->y_mask<<row_offset);
+    
+            matrix->rows_port->ODR|=(matrix->output[fil]<<row_offset);
+            HAL_GPIO_WritePin(matrix->columns_port,(matrix->col_pin<<(fil-1)),GPIO_PIN_RESET);
+            Delay_us(del);
+        }   
+        
+    }
 }
 
 void shift_matrix(Matrix_t *matrix,uint8_t y)
@@ -84,6 +105,13 @@ void shift_matrix(Matrix_t *matrix,uint8_t y)
                 matrix->output[fil]++;
         }
     }
+}
+
+void matrix_rotate(Matrix_t *matrix){
+    if(matrix->rotate)
+        matrix->rotate=0;
+    else
+        matrix->rotate=1;
 }
 
 void crop_input (Matrix_t *matrix){
