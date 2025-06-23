@@ -51,7 +51,7 @@ void Matrix_Clear(Matrix_t *matrix){
 }
 
 void multiplexado(Matrix_t *matrix){
-    uint16_t del=7500;
+    // uint16_t del=7500;
     crop_input(matrix);
     if (matrix->rotate){
         uint8_t col_offset=__builtin_ctz(matrix->col_pin);
@@ -61,7 +61,7 @@ void multiplexado(Matrix_t *matrix){
 
             matrix->columns_port->ODR&=~(matrix->output[fil]<<col_offset);
             HAL_GPIO_WritePin(matrix->rows_port,(matrix->row_pin<<fil),GPIO_PIN_SET);
-            Delay_us(del);
+            HAL_Delay(1);
             HAL_GPIO_WritePin(matrix->rows_port,(matrix->row_pin<<fil),GPIO_PIN_RESET);
         }   
     }
@@ -69,12 +69,12 @@ void multiplexado(Matrix_t *matrix){
         uint8_t row_offset=__builtin_ctz(matrix->row_pin);
         for (int fil = 0; fil < matrix->rows; fil++)
         {
-            HAL_GPIO_WritePin(matrix->columns_port,(matrix->col_pin<<(fil-1)),GPIO_PIN_SET);
             matrix->rows_port->ODR&=~(matrix->y_mask<<row_offset);
-    
+
             matrix->rows_port->ODR|=(matrix->output[fil]<<row_offset);
-            HAL_GPIO_WritePin(matrix->columns_port,(matrix->col_pin<<(fil-1)),GPIO_PIN_RESET);
-            Delay_us(del);
+            HAL_GPIO_WritePin(matrix->columns_port,(matrix->col_pin<<fil),GPIO_PIN_RESET);
+            HAL_Delay(1);
+            HAL_GPIO_WritePin(matrix->columns_port,(matrix->col_pin<<fil),GPIO_PIN_SET);
         }   
         
     }

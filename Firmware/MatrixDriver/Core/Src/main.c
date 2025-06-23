@@ -102,7 +102,7 @@ int main(void)
 
   uint32_t millis = HAL_GetTick();
   Matrix_Init(&pantalla,8,8,FILAS_GPIO_Port,COLUMNAS_GPIO_Port,FILAS_Pin,COLUMNAS_Pin,0);
-  uint8_t contador=0;
+  uint8_t contador=5;
 
   uint8_t boton2 = 0;
   uint8_t boton3 = 0;
@@ -126,6 +126,7 @@ int main(void)
 
       if (!boton2)
       {
+        matrix_rotate(&pantalla);
         if (contador>0)
         {
           contador--;
@@ -134,11 +135,10 @@ int main(void)
         {
           contador=10;
         }
-        matrix_rotate(&pantalla);
       }
       if (!boton3)
       {
-        matrix_rotate(&pantalla);
+        // matrix_rotate(&pantalla);
         if (contador<10)
         {
           contador++;
