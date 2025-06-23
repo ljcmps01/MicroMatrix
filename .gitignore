@@ -11,3 +11,6 @@ Firmware/MatrixDriver/CTestTestfile.cmake
 Firmware/MatrixDriver/_deps
 Firmware/MatrixDriver/CMakeUserPresets.json
 Firmware/MatrixDriver/build/*
+Firmware/build
+build/*
+.vscode/*
